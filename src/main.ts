@@ -3,14 +3,14 @@ import { resize } from "./draw";
 import { update } from "./action";
 import { draw } from "./draw";
 
-type Action = "up" | "down" | "right" | "left" ;
+type Action = "up" | "down" | "right" | "left" | "zoomin" | "zoomout" ;
 
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
 if(ctx === null){
   throw new Error("CanvasRenderingContext2Dを取得できません");
 }
-const cameraSpeed :number = 384;
+let cameraSpeed :number = 384;
 
 let cameraX :number = 0;
 let cameraY :number = 0;
@@ -20,7 +20,9 @@ const keyBind = new Map<Action, string>([
   ["up","KeyW"],
   ["down","KeyS"],
   ["right","KeyD"],
-  ["left","KeyA"]
+  ["left","KeyA"],
+  ["zoomin","KeyI"],
+  ["zoomout","KeyK"]
 ]);
 
 const pressKeys = new Set<string>();
@@ -40,11 +42,13 @@ function gameLoop(currentTime: number) {
 
     lastTime = currentTime;
 
+    cameraSpeed = 384/cameraSize;
     const Update = update(
-      deltaTime,cameraSpeed,cameraX,cameraY,keyBind,pressKeys
+      deltaTime,cameraSpeed,cameraX,cameraY,cameraSize,keyBind,pressKeys
     );
     cameraX = Update.cameraX;
     cameraY = Update.cameraY;
+    cameraSize = Update.cameraSize;
 
     draw(canvas,ctx!,cameraX,cameraY,cameraSize);
 

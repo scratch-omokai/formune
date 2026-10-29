@@ -17,7 +17,6 @@ export function draw(
 
     for(let x = startX; width > x; x += 64 * cameraSize){
       line(ctx, x, 0, x, height, "#cccccc", 1);
-      console.log(x);
     }
   }
 
@@ -28,7 +27,6 @@ export function draw(
 
     for(let y = startY; width > y; y += 64 * cameraSize){
       line(ctx, 0, y, width, y, "#cccccc", 1);
-      console.log(y);
     }
   }
 }

@@ -1,13 +1,14 @@
-type Action = "up" | "down" | "right" | "left" ;
+type Action = "up" | "down" | "right" | "left" | "zoomin" | "zoomout" ;
 
 export function update(
   deltaTime :number,
   cameraSpeed :number,
   cameraX :number,
   cameraY :number,
+  cameraSize :number,
   keyBind :Map<Action, string>,
   pressKeys :Set<string>
-):{cameraX :number, cameraY :number} {
+):{cameraX :number, cameraY :number, cameraSize :number} {
   const speed :number = cameraSpeed * deltaTime;
   if (isAction("up", keyBind, pressKeys)) {
     cameraY -= speed;
@@ -25,7 +26,18 @@ export function update(
     cameraX += speed;
   }
 
-  return {cameraX,cameraY};
+  if (isAction("zoomin", keyBind, pressKeys)) {
+    cameraSize *= 1.03;
+  }
+
+  if (isAction("zoomout", keyBind, pressKeys)) {
+    cameraSize /= 1.03;
+  }
+
+  if(5 < cameraSize){cameraSize = 5};
+  if(cameraSize < 0.1){cameraSize = 0.1};
+
+  return {cameraX,cameraY,cameraSize};
 }
 
 function isAction(
