@@ -1,13 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>formune</title>
+    <style>
+      html, body {
+        margin : 0;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
   </head>
   <body>
-    <p>hello</p>
+    <canvas id="game"></canvas>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
