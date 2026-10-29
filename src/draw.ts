@@ -11,7 +11,8 @@ export function draw(
   ctx.clearRect(0, 0, width, height);
 
   {
-    const tmp :number = 0 - (cameraX % 64 * cameraSize) + (width * 0.5);
+    const tmp :number =
+    0 - (cameraX % 64 * cameraSize) + (width * 0.5) + (cameraSize * 32);
     const startX :number = 
     tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
 
@@ -21,7 +22,8 @@ export function draw(
   }
 
   {
-    const tmp :number = 0 - (cameraY % 64 * cameraSize) + (width * 0.5);
+    const tmp :number =
+    0 - (cameraY % 64 * cameraSize) + (height * 0.5) + (cameraSize * 32);
     const startY :number = 
     tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
 
