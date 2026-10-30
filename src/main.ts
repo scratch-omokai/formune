@@ -5,19 +5,35 @@ import { draw } from "./draw";
 
 type Action = "up" | "down" | "right" | "left" | "zoomin" | "zoomout" ;
 
+
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
-if(ctx === null){
-  throw new Error("CanvasRenderingContext2Dを取得できません");
-}
+if(ctx === null)
+  {throw new Error("CanvasRenderingContext2Dを取得できません");}
+
+
+const settingsButton = document.getElementById("settings-button");
+const settingsPanel = document.getElementById("settings-panel");
+const settingsClose = document.getElementById("settings-close");
+
+if(settingsButton === null)
+  {throw new Error("settings-buttonを取得できません");}
+if(settingsPanel === null)
+  {throw new Error("settings-panelを取得できません");}
+if(settingsClose === null)
+  {throw new Error("settings-closeを取得できません");}
+
+let panelDisplayed :boolean = false;
+
+
 let cameraSpeed :number = 384;
 
 let cameraX :number = 0;
 let cameraY :number = 0;
 let cameraSize :number = 1;
 
-let mouseX :number = 0;
-let mouseY :number = 0;
+let mouseX :number | null = 0;
+let mouseY :number | null = 0;
 let leftMouse :boolean = false;
 let rightMouse :boolean = false;
 
@@ -62,12 +78,29 @@ function gameLoop(currentTime: number) {
 
 requestAnimationFrame(gameLoop);
 
+settingsButton.addEventListener("click" , () => {
+  settingsPanel.style.display = "block";
+  settingsButton.style.display = "none";
+  panelDisplayed = true;
+});
+
+settingsClose.addEventListener("click" , () => {
+  settingsPanel.style.display = "none";
+  settingsButton.style.display = "block";
+  panelDisplayed = true;
+});
+
 window.addEventListener("resize", ()=>{resize(canvas)});
 resize(canvas);
 
 window.addEventListener("mousemove", (event: MouseEvent) => {
-  mouseX = event.clientX;
-  mouseY = event.clientY;
+  if (event.target !== canvas){
+    mouseX = null;
+    mouseY = null;
+  }else{
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+  }
 });
 
 window.addEventListener("mousedown", (event: MouseEvent) => {

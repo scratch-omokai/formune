@@ -7,8 +7,8 @@ export function draw(
   cameraX :number,
   cameraY :number,
   cameraSize :number,
-  mouseX :number,
-  mouseY :number,
+  mouseX :number | null,
+  mouseY :number | null,
   leftMouse :boolean
 ): void {
   const width = canvas.width;
@@ -38,7 +38,7 @@ export function draw(
     }
   }
 
-  {
+  if(!(mouseX === null || mouseY === null)){
     const C = coordinate(
       mouseX,mouseY,cameraX,cameraY,cameraSize,width,height
     );
