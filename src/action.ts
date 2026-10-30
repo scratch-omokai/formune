@@ -27,11 +27,11 @@ export function update(
   }
 
   if (isAction("zoomin", keyBind, pressKeys)) {
-    cameraSize *= 1.03;
+    cameraSize *= Math.pow(1.03, deltaTime * 60);
   }
 
   if (isAction("zoomout", keyBind, pressKeys)) {
-    cameraSize /= 1.03;
+    cameraSize /= Math.pow(1.03, deltaTime * 60);
   }
 
   if(5 < cameraSize){cameraSize = 5};

@@ -8,7 +8,8 @@ export function draw(
   cameraY :number,
   cameraSize :number,
   mouseX :number,
-  mouseY :number
+  mouseY :number,
+  leftMouse :boolean
 ): void {
   const width = canvas.width;
   const height = canvas.height;
@@ -22,7 +23,7 @@ export function draw(
     tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
 
     for(let x = startX; width > x; x += 64 * cameraSize){
-      line(ctx, x, 0, x, height, "#cccccc", 1);
+      line(ctx, x, 0, x, height, "#cccccc", cameraSize);
     }
   }
 
@@ -32,8 +33,8 @@ export function draw(
     const startY :number = 
     tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
 
-    for(let y = startY; width > y; y += 64 * cameraSize){
-      line(ctx, 0, y, width, y, "#cccccc", 1);
+    for(let y = startY; height > y; y += 64 * cameraSize){
+      line(ctx, 0, y, width, y, "#cccccc", cameraSize);
     }
   }
 
@@ -47,8 +48,8 @@ export function draw(
     );
 
     ctx.save();
-    
-    ctx.globalAlpha = 0.4;
+    if(leftMouse){ctx.globalAlpha = 0.5;}
+    else {ctx.globalAlpha = 0.25;}
     ctx.fillStyle = "#8d8d8d";
     ctx.fillRect(R.x + 32*cameraSize, R.y + 32*cameraSize, 64*cameraSize, 64*cameraSize);
 

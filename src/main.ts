@@ -16,8 +16,10 @@ let cameraX :number = 0;
 let cameraY :number = 0;
 let cameraSize :number = 1;
 
-let mouseX :number;
-let mouseY :number;
+let mouseX :number = 0;
+let mouseY :number = 0;
+let leftMouse :boolean = false;
+let rightMouse :boolean = false;
 
 const keyBind = new Map<Action, string>([
   ["up","KeyW"],
@@ -53,7 +55,7 @@ function gameLoop(currentTime: number) {
   cameraY = Update.cameraY;
   cameraSize = Update.cameraSize;
 
-  draw(canvas,ctx!,cameraX,cameraY,cameraSize,mouseX,mouseY);
+  draw(canvas,ctx!,cameraX,cameraY,cameraSize,mouseX,mouseY,leftMouse);
 
   requestAnimationFrame(gameLoop);
 }
@@ -66,4 +68,16 @@ resize(canvas);
 window.addEventListener("mousemove", (event: MouseEvent) => {
   mouseX = event.clientX;
   mouseY = event.clientY;
+});
+
+window.addEventListener("mousedown", (event: MouseEvent) => {
+  if (event.target !== canvas) return;
+
+  if (event.button === 0) leftMouse = true;
+  if (event.button === 2) rightMouse = true;
+});
+
+window.addEventListener("mouseup", (event: MouseEvent) => {
+  if (event.button === 0) leftMouse = false;
+  if (event.button === 2) rightMouse = false;
 });
