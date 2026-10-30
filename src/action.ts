@@ -35,7 +35,7 @@ export function update(
   }
 
   if(5 < cameraSize){cameraSize = 5};
-  if(cameraSize < 0.1){cameraSize = 0.1};
+  if(cameraSize < 0.15){cameraSize = 0.15};
 
   return {cameraX,cameraY,cameraSize};
 }

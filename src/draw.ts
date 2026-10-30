@@ -1,9 +1,14 @@
+import { coordinate } from "./calculate";
+import { real } from "./calculate";
+
 export function draw(
-  canvas: HTMLCanvasElement,
-  ctx: CanvasRenderingContext2D,
-  cameraX: number,
-  cameraY: number,
-  cameraSize: number
+  canvas :HTMLCanvasElement,
+  ctx :CanvasRenderingContext2D,
+  cameraX :number,
+  cameraY :number,
+  cameraSize :number,
+  mouseX :number,
+  mouseY :number
 ): void {
   const width = canvas.width;
   const height = canvas.height;
@@ -31,16 +36,34 @@ export function draw(
       line(ctx, 0, y, width, y, "#cccccc", 1);
     }
   }
+
+  {
+    const C = coordinate(
+      mouseX,mouseY,cameraX,cameraY,cameraSize,width,height
+    );
+    const R =real(
+      Math.floor((C.x - 32) / 64) * 64,Math.floor((C.y - 32) / 64) * 64,
+      cameraX,cameraY,cameraSize,width,height
+    );
+
+    ctx.save();
+    
+    ctx.globalAlpha = 0.4;
+    ctx.fillStyle = "#8d8d8d";
+    ctx.fillRect(R.x + 32*cameraSize, R.y + 32*cameraSize, 64*cameraSize, 64*cameraSize);
+
+    ctx.restore();
+  }
 }
 
 function line(
-  ctx: CanvasRenderingContext2D,
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  color: string,
-  thickness: number
+  ctx :CanvasRenderingContext2D,
+  x1 :number,
+  y1 :number,
+  x2 :number,
+  y2 :number,
+  color :string,
+  thickness :number
 ): void {
   ctx.strokeStyle = color;
   ctx.lineWidth = thickness;
@@ -50,7 +73,7 @@ function line(
   ctx.stroke();
 }
 
-export function resize(canvas: HTMLCanvasElement): void {
+export function resize(canvas :HTMLCanvasElement): void {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
