@@ -38,13 +38,15 @@ canvas {
 #settings-panel{
   position: fixed;
 
+  display: none;
+
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 
   overflow-y: auto;
   width: 50%;
-  height: 90%;
+  height: 100%;
   background: rgba(255, 255, 255, 0.70);
   
   z-index: 5;
@@ -53,8 +55,13 @@ canvas {
 #settings-close{
   position: absolute;
 
-  right: 10%;
-  top: 10%;
+  right: 5%;
+  top: 5%;
 
-  background: rgba(177, 177, 177);
+  width: 30px;
+  height: 30px;
+
+  font-size: 15px;
+
+  background: rgb(228, 228, 228, 0.1);
 }

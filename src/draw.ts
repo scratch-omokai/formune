@@ -1,20 +1,22 @@
 import { coordinate } from "./calculate";
 import { real } from "./calculate";
+import { canvas , ctx } from "./canvas";
+
+if(ctx === null)
+  {throw new Error("CanvasRenderingContext2Dを取得できません");}
 
 export function draw(
-  canvas :HTMLCanvasElement,
-  ctx :CanvasRenderingContext2D,
   cameraX :number,
   cameraY :number,
   cameraSize :number,
   mouseX :number | null,
   mouseY :number | null,
-  leftMouse :boolean
+  leftMouse :Boolean
 ): void {
   const width = canvas.width;
   const height = canvas.height;
 
-  ctx.clearRect(0, 0, width, height);
+  ctx!.clearRect(0, 0, width, height);
 
   {
     const tmp :number =
@@ -23,7 +25,7 @@ export function draw(
     tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
 
     for(let x = startX; width > x; x += 64 * cameraSize){
-      line(ctx, x, 0, x, height, "#cccccc", cameraSize);
+      line(x, 0, x, height, "#cccccc", cameraSize);
     }
   }
 
@@ -34,7 +36,7 @@ export function draw(
     tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
 
     for(let y = startY; height > y; y += 64 * cameraSize){
-      line(ctx, 0, y, width, y, "#cccccc", cameraSize);
+      line(0, y, width, y, "#cccccc", cameraSize);
     }
   }
 
@@ -47,18 +49,17 @@ export function draw(
       cameraX,cameraY,cameraSize,width,height
     );
 
-    ctx.save();
-    if(leftMouse){ctx.globalAlpha = 0.5;}
-    else {ctx.globalAlpha = 0.25;}
-    ctx.fillStyle = "#8d8d8d";
-    ctx.fillRect(R.x + 32*cameraSize, R.y + 32*cameraSize, 64*cameraSize, 64*cameraSize);
+    ctx!.save();
+    if(leftMouse){ctx!.globalAlpha = 0.5;}
+    else {ctx!.globalAlpha = 0.25;}
+    ctx!.fillStyle = "#8d8d8d";
+    ctx!.fillRect(R.x + 32*cameraSize, R.y + 32*cameraSize, 64*cameraSize, 64*cameraSize);
 
-    ctx.restore();
+    ctx!.restore();
   }
 }
 
 function line(
-  ctx :CanvasRenderingContext2D,
   x1 :number,
   y1 :number,
   x2 :number,
@@ -66,15 +67,15 @@ function line(
   color :string,
   thickness :number
 ): void {
-  ctx.strokeStyle = color;
-  ctx.lineWidth = thickness;
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.stroke();
+  ctx!.strokeStyle = color;
+  ctx!.lineWidth = thickness;
+  ctx!.beginPath();
+  ctx!.moveTo(x1, y1);
+  ctx!.lineTo(x2, y2);
+  ctx!.stroke();
 }
 
-export function resize(canvas :HTMLCanvasElement): void {
+export function resize(): void {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
