@@ -37,6 +37,8 @@ initializeSettingsPanel(keyBind);
 export const pressKeys = new Set<string>();
 
 addEventListener("keydown",(event) =>{
+  if (panelDisplayed) return;
+  
   pressKeys.add(event.code);
 });
 

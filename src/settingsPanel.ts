@@ -8,6 +8,8 @@ export type Action =
 
 export let panelDisplayed = false;
 
+let actionSettings :Action | null = null;
+
 export function initializeSettingsPanel(
   keyBind: Map<Action, string>
 ): void {
@@ -35,8 +37,38 @@ export function initializeSettingsPanel(
   });
 
   const keySettings = document.getElementById("key-settings");
+  const concealer = document.getElementById("key-settings-concealer");
+  if (!concealer) {
+  throw new Error("キー入力画面を取得できません");
+  }
 
   if (keySettings) {
+    window.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (actionSettings === null) return;
+
+      event.preventDefault();
+
+      if (event.code === "Escape") {
+        actionSettings = null;
+        concealer.style.display = "none";
+        return;
+      }
+
+      keyBind.set(actionSettings, event.code);
+
+      const description = document.getElementById(
+        `${actionSettings}-description`
+      );
+
+      if (description) {
+        description.textContent =
+          `${actionSettings}操作のキー:${event.code}`;
+      }
+
+      actionSettings = null;
+      concealer.style.display = "none";
+    });
+    
     keyBind.forEach((key, action) => {
       const child = document.createElement("div");
       child.id = `${action}-key-settings`;
@@ -47,15 +79,26 @@ export function initializeSettingsPanel(
       description.id = `${action}-description`;
       description.className = "key-settings-description";
 
-      const button = document.createElement("button");
-      button.textContent = "変更";
-      button.id = `${action}-change`;
-      button.className = "key-settings-change";
+      const changeButton = document.createElement("button");
+      changeButton.textContent = "変更";
+      changeButton.id = `${action}-change`;
+      changeButton.className = "key-settings-change";
+
+      const resetButton = document.createElement("button");
+      resetButton.textContent = "リセット";
+      resetButton.id = `${action}-reset`;
+      resetButton.className = "key-settings-reset";
 
       child.appendChild(description);
-      child.appendChild(button);
+      child.appendChild(changeButton);
+      child.appendChild(resetButton);
 
       keySettings.appendChild(child);
+
+      changeButton.addEventListener("click", () => {
+        actionSettings = action;
+        concealer.style.display = "flex";
+      });
     });
   }
 }

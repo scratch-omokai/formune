@@ -1,8 +1,7 @@
 import {
-  panelDisplayed
+  panelDisplayed,
+  type Action
 } from "./settingsPanel";
-
-type Action = "up" | "down" | "right" | "left" | "zoomin" | "zoomout" ;
 
 export function update(
   deltaTime :number,

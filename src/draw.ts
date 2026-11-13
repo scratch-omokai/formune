@@ -11,12 +11,12 @@ export function draw(
   cameraSize :number,
   mouseX :number | null,
   mouseY :number | null,
-  leftMouse :Boolean
+  leftMouse :boolean
 ): void {
   const width = canvas.width;
   const height = canvas.height;
 
-  ctx!.clearRect(0, 0, width, height);
+  ctx.clearRect(0, 0, width, height);
 
   {
     const tmp :number =
@@ -49,13 +49,13 @@ export function draw(
       cameraX,cameraY,cameraSize,width,height
     );
 
-    ctx!.save();
-    if(leftMouse){ctx!.globalAlpha = 0.5;}
-    else {ctx!.globalAlpha = 0.25;}
-    ctx!.fillStyle = "#8d8d8d";
-    ctx!.fillRect(R.x + 32*cameraSize, R.y + 32*cameraSize, 64*cameraSize, 64*cameraSize);
+    ctx.save();
+    if(leftMouse){ctx.globalAlpha = 0.5;}
+    else {ctx.globalAlpha = 0.25;}
+    ctx.fillStyle = "#8d8d8d";
+    ctx.fillRect(R.x + 32*cameraSize, R.y + 32*cameraSize, 64*cameraSize, 64*cameraSize);
 
-    ctx!.restore();
+    ctx.restore();
   }
 }
 
@@ -67,12 +67,12 @@ function line(
   color :string,
   thickness :number
 ): void {
-  ctx!.strokeStyle = color;
-  ctx!.lineWidth = thickness;
-  ctx!.beginPath();
-  ctx!.moveTo(x1, y1);
-  ctx!.lineTo(x2, y2);
-  ctx!.stroke();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = thickness;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
 }
 
 export function resize(): void {

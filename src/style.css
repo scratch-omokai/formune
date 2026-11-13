@@ -53,7 +53,7 @@ canvas {
 }
 
 #settings-close{
-  position: absolute;
+  position: fixed;
 
   right: 5%;
   top: 5%;
@@ -64,4 +64,24 @@ canvas {
   font-size: 15px;
 
   background: rgb(228, 228, 228, 0.1);
+}
+
+#key-settings-concealer {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.5);
+
+  z-index: 9999;
+  overflow: hidden;
+}
+
+#key-settings-concealer p {
+  color: white;
+  font-size: 24px;
+  pointer-events: none;
 }
