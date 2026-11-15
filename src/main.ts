@@ -1,10 +1,11 @@
 import './style.css'
 
 import { resize , draw } from "./draw";
-import { update } from "./action";
+import { update } from "./update";
 import {
   panelDisplayed,
   initializeSettingsPanel,
+  getCameraSensitivity,
   type Action
 } from "./settingsPanel";
 
@@ -12,6 +13,7 @@ import{ canvas } from "./canvas";
 
 
 let cameraSpeed :number = 384;
+let cameraSensitivity :number = 384
 
 let cameraX :number = 0;
 let cameraY :number = 0;
@@ -34,8 +36,8 @@ export const keyBind = new Map<Action, string>([
 
 initializeSettingsPanel(keyBind);
 
-export const pressKeys = new Set<string>();
 
+export const pressKeys = new Set<string>();
 addEventListener("keydown",(event) =>{
   if (panelDisplayed) return;
   
@@ -46,6 +48,7 @@ addEventListener("keyup",(event) =>{
   pressKeys.delete(event.code);
 });
 
+
 let lastTime = 0;
 
 function gameLoop(currentTime: number) {
@@ -53,7 +56,8 @@ function gameLoop(currentTime: number) {
 
   lastTime = currentTime;
 
-  cameraSpeed = 384/Math.sqrt(cameraSize);
+  cameraSensitivity = getCameraSensitivity();
+  cameraSpeed = cameraSensitivity/Math.sqrt(cameraSize);
   const Update = update(
     deltaTime,
     cameraSpeed,cameraX,cameraY,cameraSize,

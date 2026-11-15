@@ -102,3 +102,19 @@ export function initializeSettingsPanel(
     });
   }
 }
+
+const cameraSensitivitySlider = 
+document.getElementById("camera-sensitivity-slider") as HTMLInputElement;
+const cameraSensitivity = document.getElementById("camera-sensitivity");
+if (!cameraSensitivity) {
+  throw new Error("カメラの速さを表示する要素を取得できません");
+}
+
+cameraSensitivitySlider.addEventListener("input",() => {
+  cameraSensitivity.textContent = 
+  `現在の速さ:${Math.round(Number(cameraSensitivitySlider.value)/64 *10)/10}ブロック/秒`;
+})
+
+export function getCameraSensitivity():number {
+  return Number(cameraSensitivitySlider.value);
+}

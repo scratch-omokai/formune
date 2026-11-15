@@ -85,3 +85,7 @@ canvas {
   font-size: 24px;
   pointer-events: none;
 }
+
+#camera-sensitivity-slider {
+  width: 80%;
+}
