@@ -1,14 +1,18 @@
 import {
   keyBind,
+  defaultKeyBind,
   setCameraSensitivity,
   getCameraSensitivity,
+  setGridDisplayed,
+  setSelectionDisplayed,
+  getGridDisplayed,
+  getSelectionDisplayed,
   type Action
 } from "./settings";
 
-
 export let panelDisplayed = false;
 
-let actionSettings :Action | null = null;
+let actionSettings: Action | null = null;
 
 export function initializeSettingsPanel(): void {
   const settingsButton = document.getElementById("settings-button");
@@ -36,8 +40,9 @@ export function initializeSettingsPanel(): void {
 
   const keySettings = document.getElementById("key-settings");
   const concealer = document.getElementById("key-settings-concealer");
+
   if (!concealer) {
-  throw new Error("キー入力画面を取得できません");
+    throw new Error("キー入力画面を取得できません");
   }
 
   if (keySettings) {
@@ -66,7 +71,7 @@ export function initializeSettingsPanel(): void {
       actionSettings = null;
       concealer.style.display = "none";
     });
-    
+
     keyBind.forEach((key, action) => {
       const child = document.createElement("div");
       child.id = `${action}-key-settings`;
@@ -87,6 +92,17 @@ export function initializeSettingsPanel(): void {
       resetButton.id = `${action}-reset`;
       resetButton.className = "key-settings-reset";
 
+      resetButton.addEventListener("click", () => {
+        const defaultKey = defaultKeyBind.get(action);
+
+        if (defaultKey === undefined) return;
+
+        keyBind.set(action, defaultKey);
+
+        description.textContent =
+          `${action}操作のキー:${defaultKey}`;
+      });
+
       child.appendChild(description);
       child.appendChild(changeButton);
       child.appendChild(resetButton);
@@ -99,34 +115,54 @@ export function initializeSettingsPanel(): void {
       });
     });
   }
-}
 
+  const cameraSensitivitySlider =
+    document.getElementById(
+      "camera-sensitivity-slider"
+    ) as HTMLInputElement;
 
-const cameraSensitivitySlider =
-  document.getElementById(
-    "camera-sensitivity-slider"
-  ) as HTMLInputElement;
+  const cameraSensitivityDisplay =
+    document.getElementById("camera-sensitivity");
 
-const cameraSensitivityDisplay =
-  document.getElementById("camera-sensitivity");
+  if (!cameraSensitivitySlider || !cameraSensitivityDisplay) {
+    throw new Error("カメラ感度の要素を取得できません");
+  }
 
-if (!cameraSensitivitySlider || !cameraSensitivityDisplay) {
-  throw new Error("カメラ感度の要素を取得できません");
-}
+  cameraSensitivitySlider.value = String(getCameraSensitivity());
 
-cameraSensitivitySlider.value = String(getCameraSensitivity());
+  function updateCameraSensitivityDisplay(): void {
+    const value = getCameraSensitivity();
 
-function updateCameraSensitivityDisplay(): void {
-  const value = getCameraSensitivity();
+    cameraSensitivityDisplay!.textContent =
+      `現在の速さ:${Math.round(value / 64 * 10) / 10}ブロック/秒`;
+  }
 
-  cameraSensitivityDisplay!.textContent =
-    `現在の速さ:${Math.round(value / 64 * 10) / 10}ブロック/秒`;
-}
+  cameraSensitivitySlider.addEventListener("input", () => {
+    setCameraSensitivity(Number(cameraSensitivitySlider.value));
+    updateCameraSensitivityDisplay();
+  });
 
-
-cameraSensitivitySlider.addEventListener("input", () => {
-  setCameraSensitivity(Number(cameraSensitivitySlider.value));
   updateCameraSensitivityDisplay();
-});
 
-updateCameraSensitivityDisplay();
+
+  const gridDisplayed =
+    document.getElementById("grid-display") as HTMLInputElement;
+    
+  const selectionDisplayed =
+    document.getElementById("selection-display") as HTMLInputElement;
+
+  if (!gridDisplayed || !selectionDisplayed) {
+    throw new Error("表示設定の要素を取得できません");
+  }
+
+  gridDisplayed.checked = getGridDisplayed();
+  selectionDisplayed.checked = getSelectionDisplayed();
+
+  gridDisplayed.addEventListener("change", () => {
+    setGridDisplayed(gridDisplayed.checked);
+  });
+
+  selectionDisplayed.addEventListener("change", () => {
+    setSelectionDisplayed(selectionDisplayed.checked);
+  });
+}

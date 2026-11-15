@@ -1,8 +1,4 @@
 import {
-  panelDisplayed,
-} from "./settings/settingsPanel";
-
-import {
   type Action
 } from "./settings/settings";
 
@@ -14,6 +10,7 @@ export function update(
   cameraSize :number,
   keyBind :Map<Action, string>,
   pressKeys :Set<string>,
+  panelDisplayed: boolean,
 ):{cameraX :number, cameraY :number, cameraSize :number} {
   if(!panelDisplayed){
     const speed :number = cameraSpeed * deltaTime;

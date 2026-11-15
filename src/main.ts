@@ -9,7 +9,9 @@ import {
 
 import {
   keyBind,
-  getCameraSensitivity
+  getCameraSensitivity,
+  getGridDisplayed,
+  getSelectionDisplayed
 } from "./settings/settings";
 
 import{ canvas } from "./canvas";
@@ -53,14 +55,28 @@ function gameLoop(currentTime: number) {
   
   const Update = update(
     deltaTime,
-    cameraSpeed,cameraX,cameraY,cameraSize,
-    keyBind,pressKeys,
+    cameraSpeed,
+    cameraX,
+    cameraY,
+    cameraSize,
+    keyBind,
+    pressKeys,
+    panelDisplayed,
   );
   cameraX = Update.cameraX;
   cameraY = Update.cameraY;
   cameraSize = Update.cameraSize;
 
-  draw(cameraX,cameraY,cameraSize,mouseX,mouseY,leftMouse);
+  draw(
+    cameraX,
+    cameraY,
+    cameraSize,
+    mouseX,
+    mouseY,
+    leftMouse,
+    getGridDisplayed(),
+    getSelectionDisplayed(),
+  );
 
   requestAnimationFrame(gameLoop);
 }
@@ -90,4 +106,8 @@ window.addEventListener("mousedown", (event: MouseEvent) => {
 window.addEventListener("mouseup", (event: MouseEvent) => {
   if (event.button === 0) leftMouse = false;
   if (event.button === 2) rightMouse = false;
+});
+
+document.addEventListener("contextmenu", (event) => {
+  event.preventDefault();
 });

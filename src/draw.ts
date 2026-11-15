@@ -11,36 +11,40 @@ export function draw(
   cameraSize :number,
   mouseX :number | null,
   mouseY :number | null,
-  leftMouse :boolean
+  leftMouse :boolean,
+  gridDisplayed :boolean,
+  selectionDisplayed :boolean
 ): void {
   const width = canvas.width;
   const height = canvas.height;
 
   ctx.clearRect(0, 0, width, height);
 
-  {
-    const tmp :number =
-    0 - (cameraX % 64 * cameraSize) + (width * 0.5) + (cameraSize * 32);
-    const startX :number = 
-    tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
+  if(gridDisplayed){
+    {
+      const tmp :number =
+      0 - (cameraX % 64 * cameraSize) + (width * 0.5) + (cameraSize * 32);
+      const startX :number = 
+      tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
 
-    for(let x = startX; width > x; x += 64 * cameraSize){
-      line(x, 0, x, height, "#cccccc", cameraSize);
+      for(let x = startX; width > x; x += 64 * cameraSize){
+        line(x, 0, x, height, "#cccccc", cameraSize);
+      }
+    }
+
+    {
+      const tmp :number =
+      0 - (cameraY % 64 * cameraSize) + (height * 0.5) + (cameraSize * 32);
+      const startY :number = 
+      tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
+
+      for(let y = startY; height > y; y += 64 * cameraSize){
+        line(0, y, width, y, "#cccccc", cameraSize);
+      }
     }
   }
 
-  {
-    const tmp :number =
-    0 - (cameraY % 64 * cameraSize) + (height * 0.5) + (cameraSize * 32);
-    const startY :number = 
-    tmp - (Math.floor(tmp / (64 * cameraSize)) * 64 * cameraSize);
-
-    for(let y = startY; height > y; y += 64 * cameraSize){
-      line(0, y, width, y, "#cccccc", cameraSize);
-    }
-  }
-
-  if(!(mouseX === null || mouseY === null)){
+  if(!(mouseX === null || mouseY === null) && selectionDisplayed){
     const C = coordinate(
       mouseX,mouseY,cameraX,cameraY,cameraSize,width,height
     );
@@ -53,10 +57,16 @@ export function draw(
     if(leftMouse){ctx.globalAlpha = 0.5;}
     else {ctx.globalAlpha = 0.25;}
     ctx.fillStyle = "#8d8d8d";
-    ctx.fillRect(R.x + 32*cameraSize, R.y + 32*cameraSize, 64*cameraSize, 64*cameraSize);
+    ctx.fillRect(
+      R.x + 32*cameraSize, 
+      R.y + 32*cameraSize, 
+      64*cameraSize, 
+      64*cameraSize
+    );
 
     ctx.restore();
   }
+
 }
 
 function line(
