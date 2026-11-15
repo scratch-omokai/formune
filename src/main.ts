@@ -4,16 +4,16 @@ import { resize , draw } from "./draw";
 import { update } from "./update";
 import {
   panelDisplayed,
-  initializeSettingsPanel,
-  getCameraSensitivity,
-  type Action
-} from "./settingsPanel";
+  initializeSettingsPanel
+} from "./settings/settingsPanel";
+
+import {
+  keyBind,
+  getCameraSensitivity
+} from "./settings/settings";
 
 import{ canvas } from "./canvas";
 
-
-let cameraSpeed :number = 384;
-let cameraSensitivity :number = 384
 
 let cameraX :number = 0;
 let cameraY :number = 0;
@@ -25,16 +25,8 @@ let mouseY :number | null = 0;
 export let leftMouse :boolean = false;
 export let rightMouse :boolean = false;
 
-export const keyBind = new Map<Action, string>([
-  ["up","KeyW"],
-  ["down","KeyS"],
-  ["right","KeyD"],
-  ["left","KeyA"],
-  ["zoomin","KeyI"],
-  ["zoomout","KeyK"]
-]);
 
-initializeSettingsPanel(keyBind);
+initializeSettingsPanel();
 
 
 export const pressKeys = new Set<string>();
@@ -56,8 +48,9 @@ function gameLoop(currentTime: number) {
 
   lastTime = currentTime;
 
-  cameraSensitivity = getCameraSensitivity();
-  cameraSpeed = cameraSensitivity/Math.sqrt(cameraSize);
+  const cameraSpeed =
+  getCameraSensitivity() / Math.sqrt(cameraSize);
+  
   const Update = update(
     deltaTime,
     cameraSpeed,cameraX,cameraY,cameraSize,

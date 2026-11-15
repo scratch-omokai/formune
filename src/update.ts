@@ -1,7 +1,10 @@
 import {
   panelDisplayed,
+} from "./settings/settingsPanel";
+
+import {
   type Action
-} from "./settingsPanel";
+} from "./settings/settings";
 
 export function update(
   deltaTime :number,

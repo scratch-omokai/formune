@@ -1,18 +1,16 @@
-export type Action =
-  | "up"
-  | "down"
-  | "right"
-  | "left"
-  | "zoomin"
-  | "zoomout";
+import {
+  keyBind,
+  setCameraSensitivity,
+  getCameraSensitivity,
+  type Action
+} from "./settings";
+
 
 export let panelDisplayed = false;
 
 let actionSettings :Action | null = null;
 
-export function initializeSettingsPanel(
-  keyBind: Map<Action, string>
-): void {
+export function initializeSettingsPanel(): void {
   const settingsButton = document.getElementById("settings-button");
   const settingsPanel = document.getElementById("settings-panel");
   const settingsClose = document.getElementById("settings-close");
@@ -103,18 +101,32 @@ export function initializeSettingsPanel(
   }
 }
 
-const cameraSensitivitySlider = 
-document.getElementById("camera-sensitivity-slider") as HTMLInputElement;
-const cameraSensitivity = document.getElementById("camera-sensitivity");
-if (!cameraSensitivity) {
-  throw new Error("カメラの速さを表示する要素を取得できません");
+
+const cameraSensitivitySlider =
+  document.getElementById(
+    "camera-sensitivity-slider"
+  ) as HTMLInputElement;
+
+const cameraSensitivityDisplay =
+  document.getElementById("camera-sensitivity");
+
+if (!cameraSensitivitySlider || !cameraSensitivityDisplay) {
+  throw new Error("カメラ感度の要素を取得できません");
 }
 
-cameraSensitivitySlider.addEventListener("input",() => {
-  cameraSensitivity.textContent = 
-  `現在の速さ:${Math.round(Number(cameraSensitivitySlider.value)/64 *10)/10}ブロック/秒`;
-})
+cameraSensitivitySlider.value = String(getCameraSensitivity());
 
-export function getCameraSensitivity():number {
-  return Number(cameraSensitivitySlider.value);
+function updateCameraSensitivityDisplay(): void {
+  const value = getCameraSensitivity();
+
+  cameraSensitivityDisplay!.textContent =
+    `現在の速さ:${Math.round(value / 64 * 10) / 10}ブロック/秒`;
 }
+
+
+cameraSensitivitySlider.addEventListener("input", () => {
+  setCameraSensitivity(Number(cameraSensitivitySlider.value));
+  updateCameraSensitivityDisplay();
+});
+
+updateCameraSensitivityDisplay();
